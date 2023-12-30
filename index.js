@@ -86,3 +86,52 @@ var finances = [
   ['Jan-2017', 138230],
   ['Feb-2017', 671099],
 ];
+
+// total months are counted
+var totalMonth = finances.length;
+console.log(`Financial Analysis `);
+console.log(`-------------------`);
+console.log(`Total Months: ${totalMonth}`);
+
+// total sum are counted
+var numbersOnly = finances.map(el => el[1]);
+
+var totalSum = numbersOnly.reduce(
+  (acc, currentValue) => acc + currentValue,
+  0
+);
+console.log(`Total: $${totalSum}`);
+
+// Average Change are counted
+// Greatest Increase in Profits/Losses are counted
+// Greatest Decrease in Profits/Losses are counted
+var totalAverageChange = 0;
+var netTotal = 0;
+var greatestIncrease = { date: '', amount: 0 };
+var greatestDecrease = { date: '', amount: 0 };
+
+for (let i = 1; i < finances.length; i++) {
+  const currentDate = finances[i][0];
+  const currentAmount = finances[i][1];
+
+  netTotal += currentAmount;
+
+  let change = finances[i][1] - finances[i - 1][1];
+    
+  totalAverageChange += change;
+
+  if (change > greatestIncrease.amount) {
+    greatestIncrease.date = currentDate;
+    greatestIncrease.amount = change;
+  } else if (change < greatestDecrease.amount) {
+    greatestDecrease.date = currentDate;
+    greatestDecrease.amount = change;
+  }
+}
+
+var averageChange = (totalAverageChange / (totalMonth - 1)).toFixed(2);
+
+console.log(`Average Change: ${averageChange}`);
+
+console.log(`Greatest Increase in Profits/Losses: ${greatestIncrease.date} ($${greatestIncrease.amount})`);
+console.log(`Greatest Decrease in Profits/Losses: ${greatestDecrease.date} ($${greatestDecrease.amount})`);
